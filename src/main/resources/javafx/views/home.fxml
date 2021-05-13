@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<VBox xmlns="http://javafx.com/javafx/16"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.arnaugarcia.ars.service.controller.HomeController">
+        <Text>This is Home</Text>
+</VBox>
