@@ -1,7 +1,0 @@
-spring:
-  devtools:
-    livereload:
-      enabled: false
-    add-properties: false
-  main:
-    web-application-type: none
