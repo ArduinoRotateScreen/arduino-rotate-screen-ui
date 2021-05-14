@@ -18,6 +18,10 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
     @Value("classpath:/views/main.fxml")
     private Resource mainViewResource;
+
+    @Value("classpath:/assets/css/main.css")
+    private Resource mainCSSResource;
+
     private final ApplicationContext applicationContext;
 
     public StageInitializer(ApplicationContext applicationContext) {
@@ -31,7 +35,9 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
             loader.setControllerFactory(applicationContext::getBean);
             Parent parent = loader.load();
             final Stage stage = stageReadyEvent.getStage();
-            stage.setScene(new Scene(parent, 800, 600));
+            final Scene scene = new Scene(parent, 800, 600);
+            scene.getStylesheets().add(mainCSSResource.getURL().toExternalForm());
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
