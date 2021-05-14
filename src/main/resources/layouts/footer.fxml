@@ -6,7 +6,7 @@
 <HBox xmlns="http://javafx.com/javafx"
       id="footer-section"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.arnaugarcia.ars.service.controller.layouts.FooterController">
+      fx:controller="com.arnaugarcia.ars.ui.controller.layouts.FooterController">
         <Label text="Made with ♥ by"/>
         <Hyperlink text="Arnau Garcia"/>
 </HBox>

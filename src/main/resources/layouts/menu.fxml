@@ -6,7 +6,7 @@
       xmlns:fx="http://javafx.com/fxml"
       styleClass="sidebar-section"
       fx:id="sidebarMenu"
-      fx:controller="com.arnaugarcia.ars.service.controller.layouts.MenuController">
+      fx:controller="com.arnaugarcia.ars.ui.controller.layouts.MenuController">
     <Label text="Home" onMouseClicked="#goHome"/>
     <Label text="Device" onMouseClicked="#goDevices"/>
     <Label text="About" onMouseClicked="#goAbout"/>

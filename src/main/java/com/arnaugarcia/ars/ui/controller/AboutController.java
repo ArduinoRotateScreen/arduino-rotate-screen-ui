@@ -1,4 +1,4 @@
-package com.arnaugarcia.ars.service.controller;
+package com.arnaugarcia.ars.ui.controller;
 
 import javafx.fxml.Initializable;
 

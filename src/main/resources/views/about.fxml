@@ -4,6 +4,6 @@
 <?import javafx.scene.text.Text?>
 <VBox xmlns="http://javafx.com/javafx/16"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.arnaugarcia.ars.service.controller.HomeController">
-        <Text>This is Home</Text>
+      fx:controller="com.arnaugarcia.ars.ui.controller.AboutController">
+    <Text>This is about</Text>
 </VBox>

@@ -4,7 +4,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arnaugarcia.ars.service.controller.MainController">
+<BorderPane
+        xmlns="http://javafx.com/javafx/16"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.arnaugarcia.ars.ui.controller.MainController">
     <top>
         <fx:include source="../layouts/header.fxml" />
     </top>

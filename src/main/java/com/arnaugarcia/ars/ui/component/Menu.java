@@ -1,4 +1,4 @@
-package com.arnaugarcia.ars.service.component;
+package com.arnaugarcia.ars.ui.component;
 
 import javafx.collections.ObservableMap;
 import javafx.scene.layout.Pane;

@@ -1,7 +1,6 @@
 package com.arnaugarcia.ars.ui;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationEvent;
@@ -20,7 +19,7 @@ public class ArduinoRotateScreenUI extends Application {
 
     @Override
     public void init() {
-        applicationContext = new SpringApplicationBuilder(ArduinoRotateScreenUI.class).run();
+        applicationContext = new SpringApplicationBuilder(ArduinoRotateScreen.class).run();
     }
 
     @Override
@@ -30,8 +29,8 @@ public class ArduinoRotateScreenUI extends Application {
     }
 
     static class StageReadyEvent extends ApplicationEvent {
-        public StageReadyEvent(Stage primaryStage) {
-            super(primaryStage);
+        public StageReadyEvent(Stage stage) {
+            super(stage);
         }
 
         public Stage getStage() {

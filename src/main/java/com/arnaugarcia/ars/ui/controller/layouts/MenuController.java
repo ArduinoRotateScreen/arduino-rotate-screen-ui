@@ -4,10 +4,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import org.springframework.stereotype.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+@Controller
 public class MenuController implements Initializable {
 
     @FXML
