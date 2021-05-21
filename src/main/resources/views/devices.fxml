@@ -5,6 +5,9 @@
 <?import javafx.scene.control.Label?>
 <VBox xmlns="http://javafx.com/javafx/16"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.arnaugarcia.ars.ui.controller.HomeController">
-        <Label>This is home</Label>
+      fx:controller="com.arnaugarcia.ars.ui.controller.DeviceController">
+        <Label>Devices List:</Label>
+        <VBox fx:id="devicesContainer">
+
+        </VBox>
 </VBox>
