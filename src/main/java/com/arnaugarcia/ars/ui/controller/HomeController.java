@@ -5,22 +5,27 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@Controller
-@Scope("prototype")
+@Component
+@FxmlView("/views/home.fxml")
 public class HomeController implements Initializable {
 
     @FXML
     public VBox devicesContainer;
 
+    private final DeviceService deviceService;
+
     @Autowired
-    private DeviceService deviceService;
+    public HomeController(DeviceService deviceService) {
+        this.deviceService = deviceService;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
