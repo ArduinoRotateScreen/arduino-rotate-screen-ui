@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 
 public class SpringbootJavaFxApplication extends Application {
@@ -20,22 +19,12 @@ public class SpringbootJavaFxApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        context.publishEvent(new StageReadyEvent(primaryStage)); //(2)
+        context.publishEvent(new PrimaryStageInitializer.StageReadyEvent(primaryStage)); //(2)
     }
 
     @Override
     public void stop() throws Exception { //(3)
         this.context.close();
         Platform.exit();
-    }
-
-    public static class StageReadyEvent extends ApplicationEvent {
-        public StageReadyEvent(Stage stage) {
-            super(stage);
-        }
-
-        public Stage getStage() {
-            return (Stage) getSource();
-        }
     }
 }

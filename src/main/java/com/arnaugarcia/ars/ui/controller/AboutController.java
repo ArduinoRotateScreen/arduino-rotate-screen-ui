@@ -1,20 +1,11 @@
 package com.arnaugarcia.ars.ui.controller;
 
-import javafx.fxml.Initializable;
+import com.arnaugarcia.ars.ui.component.Route;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.stereotype.Controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+@Controller
+@FxmlView("/views/about.fxml")
+public class AboutController extends Route {
 
-public class AboutController implements Initializable {
-
-    private MainController mainController;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-
-    public void init(MainController mainController) {
-        this.mainController = mainController;
-    }
 }

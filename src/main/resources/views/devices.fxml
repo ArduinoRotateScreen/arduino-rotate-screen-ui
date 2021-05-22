@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.control.Label?>
 <VBox xmlns="http://javafx.com/javafx/16"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.arnaugarcia.ars.ui.controller.DeviceController">
-        <Label>Devices List:</Label>
+        <Text>Devices List:</Text>
         <VBox fx:id="devicesContainer">
 
         </VBox>

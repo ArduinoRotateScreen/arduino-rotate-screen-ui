@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class PrimaryStageInitializer implements ApplicationListener<SpringbootJavaFxApplication.StageReadyEvent> {
+public class PrimaryStageInitializer implements ApplicationListener<PrimaryStageInitializer.StageReadyEvent> {
 
     @Value("classpath:/assets/css/main.css")
     private Resource mainCSSResource;
@@ -26,7 +27,7 @@ public class PrimaryStageInitializer implements ApplicationListener<SpringbootJa
     }
 
     @Override
-    public void onApplicationEvent(SpringbootJavaFxApplication.StageReadyEvent event) { //(2)
+    public void onApplicationEvent(StageReadyEvent event) { //(2)
         try {
             Stage stage = event.getStage();
             Scene scene = new Scene(fxWeaver.loadView(MainController.class), 800, 600); //(3)
@@ -35,6 +36,16 @@ public class PrimaryStageInitializer implements ApplicationListener<SpringbootJa
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    static class StageReadyEvent extends ApplicationEvent {
+        public StageReadyEvent(Stage stage) {
+            super(stage);
+        }
+
+        public Stage getStage() {
+            return (Stage) getSource();
         }
     }
 }
