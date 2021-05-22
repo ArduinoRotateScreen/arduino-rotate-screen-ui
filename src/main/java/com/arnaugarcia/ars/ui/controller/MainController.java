@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-@FxmlView("/views/main.fxml")
+@FxmlView("/layout/main.fxml")
 public class MainController implements Initializable, ApplicationListener<ActiveRoute> {
 
     @FXML

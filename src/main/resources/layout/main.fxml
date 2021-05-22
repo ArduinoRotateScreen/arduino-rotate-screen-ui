@@ -8,10 +8,10 @@
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="com.arnaugarcia.ars.ui.controller.MainController">
     <top>
-        <fx:include source="../layouts/header.fxml" />
+        <fx:include source="header.fxml" />
     </top>
     <left>
-        <fx:include source="../layouts/menu.fxml" />
+        <fx:include source="menu.fxml" />
     </left>
     <center>
         <VBox styleClass="content-section">
@@ -19,6 +19,6 @@
         </VBox>
     </center>
     <bottom>
-        <fx:include source="../layouts/footer.fxml" />
+        <fx:include source="footer.fxml" />
     </bottom>
 </BorderPane>
