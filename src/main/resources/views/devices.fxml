@@ -1,12 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx/16"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.arnaugarcia.ars.ui.controller.DeviceController">
-        <Text>Devices List:</Text>
-        <VBox fx:id="devicesContainer">
-
-        </VBox>
+    <HBox>
+        <VBox.margin>
+            <Insets bottom="10.0"/>
+        </VBox.margin>
+        <Label alignment="CENTER" contentDisplay="CENTER" text="Devices">
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+        </Label>
+    </HBox>
+    <HBox>
+        <ChoiceBox prefWidth="400.0">
+            <HBox.margin>
+                <Insets right="5.0"/>
+            </HBox.margin>
+        </ChoiceBox>
+        <Button mnemonicParsing="false" text="Select">
+            <HBox.margin>
+                <Insets left="5.0" right="5.0"/>
+            </HBox.margin>
+        </Button>
+        <Button mnemonicParsing="false" text="Set as default">
+            <HBox.margin>
+                <Insets left="5.0" right="5.0"/>
+            </HBox.margin>
+        </Button>
+    </HBox>
+    <HBox>
+        <Label text="Status:">
+            <HBox.margin>
+                <Insets right="5.0"/>
+            </HBox.margin>
+        </Label>
+        <Label text="CONNECTED" textFill="#08e829"/>
+        <VBox.margin>
+            <Insets bottom="20.0" top="20.0"/>
+        </VBox.margin>
+    </HBox>
+    <HBox>
+        <CheckBox mnemonicParsing="false" text="Show Device logs"/>
+        <VBox.margin>
+            <Insets bottom="20.0"/>
+        </VBox.margin>
+    </HBox>
+    <HBox prefHeight="100.0" prefWidth="200.0">
+        <TextArea disable="true" editable="false" minHeight="300.0"/>
+    </HBox>
 </VBox>
