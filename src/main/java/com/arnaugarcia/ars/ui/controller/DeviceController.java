@@ -16,8 +16,6 @@ import java.util.ResourceBundle;
 @FxmlView("/views/devices.fxml")
 public class DeviceController extends Route implements Initializable {
 
-    @FXML
-    public VBox devicesContainer;
     private final DeviceService deviceService;
 
     public DeviceController(DeviceService deviceService) {
@@ -26,9 +24,6 @@ public class DeviceController extends Route implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Init Home controller");
-        deviceService.getDeviceList().forEach(device -> {
-            devicesContainer.getChildren().add(new Label(device.getName()));
-        });
+
     }
 }
