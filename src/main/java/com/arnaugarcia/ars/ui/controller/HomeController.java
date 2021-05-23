@@ -43,10 +43,11 @@ public class HomeController extends Route implements Initializable {
     }
 
     private DisplayComponent buildDisplayComponent(Display display) {
-        final DisplayComponent displayComponent = new DisplayComponent();
-        displayComponent.setDisplayHeight(display.getHeight());
-        displayComponent.setDisplayWidth(display.getWide());
-        displayComponent.setMainDisplay(display.getMain());
-        return displayComponent;
+        return DisplayComponent.builder()
+                .displayWidth(display.getWide() / 10)
+                .displayHeight(display.getHeight() / 10)
+                .identifier("hey")
+                .mainDisplay(display.getMain())
+                .build();
     }
 }
