@@ -17,7 +17,7 @@
         </Label>
     </HBox>
     <HBox>
-        <ChoiceBox prefWidth="400.0">
+        <ChoiceBox prefWidth="400.0" fx:id="deviceSelector">
             <HBox.margin>
                 <Insets right="5.0"/>
             </HBox.margin>
