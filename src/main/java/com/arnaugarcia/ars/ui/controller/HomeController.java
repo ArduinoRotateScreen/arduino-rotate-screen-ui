@@ -23,7 +23,7 @@ public class HomeController extends Route implements Initializable {
     private final DisplayService displayService;
 
     @FXML
-    public HBox displays;
+    public HBox displayContainer;
 
     public HomeController(DisplayService displayService) {
         this.displayService = displayService;
@@ -31,22 +31,25 @@ public class HomeController extends Route implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        appendDisplays();
+        final List<DisplayComponent> displays = findAndTransformDisplays();
+        appendDisplays(displays);
     }
 
-    private void appendDisplays() {
-        final List<DisplayComponent> displays = displayService.findDisplays()
+    private void appendDisplays(List<DisplayComponent> displays) {
+        this.displayContainer.getChildren().addAll(displays);
+    }
+
+    private List<DisplayComponent> findAndTransformDisplays() {
+        return displayService.findDisplays()
                 .stream()
                 .map(this::buildDisplayComponent)
                 .collect(toList());
-        this.displays.getChildren().addAll(displays);
     }
 
     private DisplayComponent buildDisplayComponent(Display display) {
         return DisplayComponent.builder()
                 .displayWidth(display.getWide() / 10)
                 .displayHeight(display.getHeight() / 10)
-                .identifier("hey")
                 .mainDisplay(display.getMain())
                 .build();
     }
