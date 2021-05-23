@@ -27,10 +27,10 @@ public class PrimaryStageInitializer implements ApplicationListener<PrimaryStage
     }
 
     @Override
-    public void onApplicationEvent(StageReadyEvent event) { //(2)
+    public void onApplicationEvent(StageReadyEvent event) {
         try {
             Stage stage = event.getStage();
-            Scene scene = new Scene(fxWeaver.loadView(MainController.class), 1024, 600); //(3)
+            Scene scene = new Scene(fxWeaver.loadView(MainController.class), 900, 600);
             scene.getStylesheets().add(mainCSSResource.getURL().toExternalForm());
             stage.setScene(scene);
             stage.show();
