@@ -8,5 +8,5 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.arnaugarcia.ars.ui.controller.layouts.FooterController">
         <Label text="Made with ♥ by"/>
-        <Hyperlink text="Arnau Garcia"/>
+        <Hyperlink fx:id="website" text="Arnau Garcia" onMouseClicked="#openWebsite"/>
 </HBox>
