@@ -87,7 +87,8 @@ public class DeviceController extends Route implements Initializable {
     }
 
     @FXML
-    private void toggleLogArea() {
+    private void clearAndToggleLogArea() {
+        this.logArea.clear();
         this.logArea.setDisable(!this.logArea.isDisabled());
     }
 
