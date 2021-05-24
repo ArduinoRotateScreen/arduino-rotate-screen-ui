@@ -1,9 +1,10 @@
 package com.arnaugarcia.ars.ui.controller;
 
 import com.arnaugarcia.ars.service.domain.Device;
-import com.arnaugarcia.ars.service.domain.DeviceData;
 import com.arnaugarcia.ars.service.service.DeviceService;
 import com.arnaugarcia.ars.service.service.DisplayService;
+import com.arnaugarcia.ars.service.service.dto.DeviceData;
+import com.arnaugarcia.ars.service.service.dto.DeviceDataListener;
 import com.arnaugarcia.ars.ui.component.Route;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
@@ -65,30 +66,16 @@ public class DeviceController extends Route implements Initializable {
             if (this.currentDevice == selectedDevice) {
                 return;
             }
-            deviceService.removeListener(device);
+            // deviceService.removeListener(device);
             this.currentDevice = selectedDevice;
             attachListener(this.currentDevice);
         };
     }
 
     private void attachListener(Device device)  {
-        deviceService.attachListener(device, new SerialPortDataListener() {
-            @Override
-            public int getListeningEvents() {
-                return LISTENING_EVENT_DATA_AVAILABLE;
-            }
-
-            @Override
-            public void serialEvent(SerialPortEvent event) {
-                if (event.getEventType() != SerialPort.LISTENING_EVENT_DATA_AVAILABLE)
-                    return;
-                final SerialPort serialPort = event.getSerialPort();
-                byte[] newData = new byte[serialPort.bytesAvailable()];
-                serialPort.readBytes(newData, newData.length);
-                final String data = new String(newData);
-                appendStringInLog(data);
-                rotateIfNeed(new DeviceData(data));
-            }
+        deviceService.attachListener(device, (DeviceDataListener) deviceData -> {
+            appendStringInLog(deviceData);
+            // Rotate if needed
         });
     }
 
