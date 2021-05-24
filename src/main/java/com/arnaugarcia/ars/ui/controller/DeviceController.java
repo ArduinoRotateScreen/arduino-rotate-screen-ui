@@ -1,7 +1,9 @@
 package com.arnaugarcia.ars.ui.controller;
 
 import com.arnaugarcia.ars.service.domain.Device;
+import com.arnaugarcia.ars.service.domain.DeviceData;
 import com.arnaugarcia.ars.service.service.DeviceService;
+import com.arnaugarcia.ars.service.service.DisplayService;
 import com.arnaugarcia.ars.ui.component.Route;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
@@ -42,9 +44,11 @@ public class DeviceController extends Route implements Initializable {
     private ChoiceBox<Device> deviceSelector;
 
     private Device currentDevice;
+    private final DisplayService displayService;
 
-    public DeviceController(DeviceService deviceService) {
+    public DeviceController(DeviceService deviceService, DisplayService displayService) {
         this.deviceService = deviceService;
+        this.displayService = displayService;
     }
 
     @Override
@@ -81,9 +85,17 @@ public class DeviceController extends Route implements Initializable {
                 final SerialPort serialPort = event.getSerialPort();
                 byte[] newData = new byte[serialPort.bytesAvailable()];
                 serialPort.readBytes(newData, newData.length);
-                appendStringInLog(new String(newData));
+                final String data = new String(newData);
+                appendStringInLog(data);
+                rotateIfNeed(new DeviceData(data));
             }
         });
+    }
+
+    private void rotateIfNeed(DeviceData deviceData) {
+        if (deviceData.getRoll() < 100 && deviceData.getRoll() > 80) {
+            //this.displayService.rotateScreen();
+        }
     }
 
     @FXML
