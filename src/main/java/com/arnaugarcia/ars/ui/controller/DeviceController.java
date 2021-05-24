@@ -86,8 +86,15 @@ public class DeviceController extends Route implements Initializable {
         });
     }
 
-    private void appendStringInLog(String data) {
+    @FXML
+    private void toggleLogArea() {
+        this.logArea.setDisable(!this.logArea.isDisabled());
+    }
 
+    private void appendStringInLog(String data) {
+        if (this.showDeviceLogsCheckBox.isSelected()) {
+            this.logArea.appendText(data);
+        }
     }
 
     private void loadDevicesInSelector() {
