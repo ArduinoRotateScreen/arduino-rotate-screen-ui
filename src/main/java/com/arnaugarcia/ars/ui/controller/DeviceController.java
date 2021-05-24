@@ -2,13 +2,9 @@ package com.arnaugarcia.ars.ui.controller;
 
 import com.arnaugarcia.ars.service.domain.Device;
 import com.arnaugarcia.ars.service.service.DeviceService;
-import com.arnaugarcia.ars.service.service.DisplayService;
-import com.arnaugarcia.ars.service.service.dto.DeviceData;
 import com.arnaugarcia.ars.service.service.dto.DeviceDataListener;
 import com.arnaugarcia.ars.ui.component.Route;
-import com.fazecast.jSerialComm.SerialPort;
-import com.fazecast.jSerialComm.SerialPortDataListener;
-import com.fazecast.jSerialComm.SerialPortEvent;
+import com.arnaugarcia.ars.ui.service.RotateService;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,7 +19,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.fazecast.jSerialComm.SerialPort.LISTENING_EVENT_DATA_AVAILABLE;
 import static javafx.collections.FXCollections.observableArrayList;
 
 @Controller
@@ -46,8 +41,11 @@ public class DeviceController extends Route implements Initializable {
 
     private Device currentDevice;
 
-    public DeviceController(DeviceService deviceService) {
+    private final RotateService rotateService;
+
+    public DeviceController(DeviceService deviceService, RotateService rotateService) {
         this.deviceService = deviceService;
+        this.rotateService = rotateService;
     }
 
     @Override
@@ -72,6 +70,7 @@ public class DeviceController extends Route implements Initializable {
     private void attachListener(Device device)  {
         deviceService.attachListener(device, (DeviceDataListener) deviceData -> {
             appendStringInLog(deviceData.toString());
+            this.rotateService.rotateIfNeeded(deviceData);
         });
     }
 

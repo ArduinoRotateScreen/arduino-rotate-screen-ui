@@ -7,6 +7,8 @@ import com.arnaugarcia.ars.ui.service.RotateService;
 import com.arnaugarcia.ars.ui.service.dto.DeviceThreshold;
 import org.springframework.stereotype.Service;
 
+import static com.arnaugarcia.ars.ui.service.dto.DeviceThreshold.Between.between;
+
 @Service
 public class RotateServiceImpl implements RotateService {
 
@@ -16,16 +18,24 @@ public class RotateServiceImpl implements RotateService {
 
     public RotateServiceImpl(DisplayService displayService) {
         this.currentDisplay = findPersistedDisplay();
+        this.threshold = findPersistedThreshold();
         this.displayService = displayService;
     }
 
+    private DeviceThreshold findPersistedThreshold() { // TODO: Get persisted
+        return DeviceThreshold.builder()
+                .verticalThreshold(between(70, 100))
+                .horizontalThreshold(between(-10, 10))
+                .build();
+    }
+
     private Display findPersistedDisplay() {
-        return null;
+        return new Display(188940595, null, null, 90, null, null);
     }
 
     @Override
     public void rotateIfNeeded(DeviceData deviceData) {
-
+        this.currentDisplay.getOrientation();
     }
 
     @Override
