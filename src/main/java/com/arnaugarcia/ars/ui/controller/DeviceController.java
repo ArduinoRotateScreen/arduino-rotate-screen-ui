@@ -9,7 +9,10 @@ import com.fazecast.jSerialComm.SerialPortEvent;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Controller;
 
@@ -25,6 +28,15 @@ import static javafx.collections.FXCollections.observableArrayList;
 public class DeviceController extends Route implements Initializable {
 
     private final DeviceService deviceService;
+
+    @FXML
+    public Label statusLabel;
+
+    @FXML
+    public CheckBox showDeviceLogsCheckBox;
+
+    @FXML
+    public TextArea logArea;
 
     @FXML
     private ChoiceBox<Device> deviceSelector;
@@ -69,6 +81,7 @@ public class DeviceController extends Route implements Initializable {
                 final SerialPort serialPort = event.getSerialPort();
                 byte[] newData = new byte[serialPort.bytesAvailable()];
                 serialPort.readBytes(newData, newData.length);
+                appendStringInLog(new String(newData));
             }
         });
     }

@@ -34,18 +34,18 @@
                 <Insets right="5.0"/>
             </HBox.margin>
         </Label>
-        <Label text="CONNECTED" textFill="#08e829"/>
+        <Label fx:id="statusLabel" text="CONNECTED" textFill="#08e829"/>
         <VBox.margin>
             <Insets bottom="20.0" top="20.0"/>
         </VBox.margin>
     </HBox>
     <HBox>
-        <CheckBox mnemonicParsing="false" text="Show Device logs"/>
+        <CheckBox fx:id="showDeviceLogsCheckBox" mnemonicParsing="false" text="Show Device logs"/>
         <VBox.margin>
             <Insets bottom="20.0"/>
         </VBox.margin>
     </HBox>
     <HBox prefHeight="100.0" prefWidth="200.0">
-        <TextArea disable="true" editable="false" minHeight="300.0"/>
+        <TextArea fx:id="logArea" disable="true" editable="false" minHeight="300.0"/>
     </HBox>
 </VBox>
