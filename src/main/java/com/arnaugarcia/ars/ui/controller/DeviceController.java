@@ -75,12 +75,6 @@ public class DeviceController extends Route implements Initializable {
         });
     }
 
-    private void rotateIfNeed(DeviceData deviceData) {
-        if (deviceData.getRoll() < 100 && deviceData.getRoll() > 80) {
-            //this.displayService.rotateScreen();
-        }
-    }
-
     @FXML
     private void clearAndToggleLogArea() {
         this.logArea.clear();
