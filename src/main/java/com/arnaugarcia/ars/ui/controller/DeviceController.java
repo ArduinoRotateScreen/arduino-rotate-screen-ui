@@ -45,11 +45,9 @@ public class DeviceController extends Route implements Initializable {
     private ChoiceBox<Device> deviceSelector;
 
     private Device currentDevice;
-    private final DisplayService displayService;
 
-    public DeviceController(DeviceService deviceService, DisplayService displayService) {
+    public DeviceController(DeviceService deviceService) {
         this.deviceService = deviceService;
-        this.displayService = displayService;
     }
 
     @Override
@@ -66,7 +64,6 @@ public class DeviceController extends Route implements Initializable {
             if (this.currentDevice == selectedDevice) {
                 return;
             }
-            // deviceService.removeListener(device);
             this.currentDevice = selectedDevice;
             attachListener(this.currentDevice);
         };
@@ -74,8 +71,7 @@ public class DeviceController extends Route implements Initializable {
 
     private void attachListener(Device device)  {
         deviceService.attachListener(device, (DeviceDataListener) deviceData -> {
-            appendStringInLog(deviceData);
-            // Rotate if needed
+            appendStringInLog(deviceData.toString());
         });
     }
 
