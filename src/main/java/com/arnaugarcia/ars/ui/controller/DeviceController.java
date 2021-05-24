@@ -45,12 +45,17 @@ public class DeviceController extends Route implements Initializable {
 
     private ChangeListener<Device> onItemSelected() {
         return (observableValue, device, t1) -> {
-            this.currentDevice = observableValue.getValue();
-            connect(this.currentDevice);
+            final Device selectedDevice = observableValue.getValue();
+            if (this.currentDevice == selectedDevice) {
+                return;
+            }
+            deviceService.removeListener(device);
+            this.currentDevice = selectedDevice;
+            attachListener(this.currentDevice);
         };
     }
 
-    private void connect(Device device)  {
+    private void attachListener(Device device)  {
         deviceService.attachListener(device, new SerialPortDataListener() {
             @Override
             public int getListeningEvents() {
