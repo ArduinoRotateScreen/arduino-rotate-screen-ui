@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.prefs.Preferences.userRoot;
 
@@ -17,7 +18,7 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
 
     private final String USER_PREFERENCES_NODE = "ARS";
     private final Preferences preferences = userRoot().node(USER_PREFERENCES_NODE);
-    private Optional<UserConfigurationDTO> userConfiguration;
+    private Optional<UserConfigurationDTO> userConfiguration = empty();
     private final String DEVICE_PORT_KEY = "PORT";
 
     @PostConstruct
