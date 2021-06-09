@@ -73,8 +73,8 @@ public class DeviceController extends Route implements Initializable {
     }
 
     private ChangeListener<String> onItemSelected() {
-        return (observableValue, devicePort, t1) -> {
-            final Device selectedDevice = deviceService.findDeviceByPort(devicePort)
+        return (observableValue, devicePort, selectedValue) -> {
+            final Device selectedDevice = deviceService.findDeviceByPort(selectedValue)
                     .orElseThrow(() -> new DeviceNotFound(devicePort));
             if (this.currentDevice == selectedDevice) {
                 return;
