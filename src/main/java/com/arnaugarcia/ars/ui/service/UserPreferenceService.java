@@ -4,7 +4,9 @@ import com.arnaugarcia.ars.ui.service.dto.UserConfigurationDTO;
 
 import java.util.Optional;
 
-public interface UserConfigurationService {
+public interface UserPreferenceService {
+
     Optional<UserConfigurationDTO> findUserConfiguration();
-    void storeUserConfiguration();
+
+    void storeUserConfiguration(UserConfigurationDTO userConfigurationDTO);
 }
