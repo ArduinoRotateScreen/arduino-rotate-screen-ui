@@ -22,7 +22,7 @@
                 <Insets right="5.0"/>
             </HBox.margin>
         </ChoiceBox>
-        <Button mnemonicParsing="false" text="Set as default">
+        <Button mnemonicParsing="false" text="Set as default" onMouseClicked="#saveDefaultDevice">
             <HBox.margin>
                 <Insets left="5.0" right="5.0"/>
             </HBox.margin>

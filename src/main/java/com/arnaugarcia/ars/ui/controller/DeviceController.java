@@ -7,6 +7,7 @@ import com.arnaugarcia.ars.service.service.exception.DeviceNotFound;
 import com.arnaugarcia.ars.ui.component.Route;
 import com.arnaugarcia.ars.ui.service.RotateService;
 import com.arnaugarcia.ars.ui.service.UserPreferenceService;
+import com.arnaugarcia.ars.ui.service.dto.UserConfigurationDTO;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +15,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Controller;
 
@@ -59,12 +61,15 @@ public class DeviceController extends Route implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadDevicesInSelector();
-        userPreferenceService.findUserConfiguration().ifPresent(userConfigurationDTO -> {
-            deviceSelector.setValue(userConfigurationDTO.getDevicePort());
-        });
+        userPreferenceService.findUserConfiguration()
+                .ifPresent(userConfigurationDTO -> setSelectedPort(userConfigurationDTO.getDevicePort()));
         deviceSelector.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(onItemSelected());
+    }
+
+    private void setSelectedPort(String devicePort) {
+        deviceSelector.setValue(devicePort);
     }
 
     private ChangeListener<String> onItemSelected() {
@@ -103,5 +108,13 @@ public class DeviceController extends Route implements Initializable {
                 .map(Device::getPort)
                 .collect(toList());
         deviceSelector.setItems(observableArrayList(deviceList));
+    }
+
+    public void saveDefaultDevice(MouseEvent mouseEvent) {
+        final UserConfigurationDTO userConfiguration = UserConfigurationDTO.builder()
+                .devicePort(this.currentDevice.getPort())
+                .build();
+        this.userPreferenceService.storeUserConfiguration(userConfiguration);
+        // TODO: Alert system (success saved preferences)
     }
 }

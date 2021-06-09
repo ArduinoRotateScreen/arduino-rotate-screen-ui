@@ -26,6 +26,8 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
         try {
             if (preferences.nodeExists(USER_PREFERENCES_NODE)) {
                 setUserConfiguration(buildUserPreferences(preferences));
+            } else {
+                preferences.node(USER_PREFERENCES_NODE);
             }
         } catch (BackingStoreException e) {
             e.printStackTrace();
