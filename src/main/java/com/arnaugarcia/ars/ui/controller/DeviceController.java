@@ -3,8 +3,10 @@ package com.arnaugarcia.ars.ui.controller;
 import com.arnaugarcia.ars.service.domain.Device;
 import com.arnaugarcia.ars.service.service.DeviceService;
 import com.arnaugarcia.ars.service.service.dto.DeviceDataListener;
+import com.arnaugarcia.ars.service.service.exception.DeviceNotFound;
 import com.arnaugarcia.ars.ui.component.Route;
 import com.arnaugarcia.ars.ui.service.RotateService;
+import com.arnaugarcia.ars.ui.service.UserPreferenceService;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,6 +21,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static java.util.stream.Collectors.toList;
 import static javafx.collections.FXCollections.observableArrayList;
 
 @Controller
@@ -37,28 +40,37 @@ public class DeviceController extends Route implements Initializable {
     public TextArea logArea;
 
     @FXML
-    private ChoiceBox<Device> deviceSelector;
+    private ChoiceBox<String> deviceSelector;
 
     private Device currentDevice;
 
     private final RotateService rotateService;
 
-    public DeviceController(DeviceService deviceService, RotateService rotateService) {
+    private final UserPreferenceService userPreferenceService;
+
+    public DeviceController(DeviceService deviceService,
+                            RotateService rotateService,
+                            UserPreferenceService userPreferenceService) {
         this.deviceService = deviceService;
         this.rotateService = rotateService;
+        this.userPreferenceService = userPreferenceService;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadDevicesInSelector();
+        userPreferenceService.findUserConfiguration().ifPresent(userConfigurationDTO -> {
+            deviceSelector.setValue(userConfigurationDTO.getDevicePort());
+        });
         deviceSelector.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(onItemSelected());
     }
 
-    private ChangeListener<Device> onItemSelected() {
-        return (observableValue, device, t1) -> {
-            final Device selectedDevice = observableValue.getValue();
+    private ChangeListener<String> onItemSelected() {
+        return (observableValue, devicePort, t1) -> {
+            final Device selectedDevice = deviceService.findDeviceByPort(devicePort)
+                    .orElseThrow(() -> new DeviceNotFound(devicePort));
             if (this.currentDevice == selectedDevice) {
                 return;
             }
@@ -87,7 +99,9 @@ public class DeviceController extends Route implements Initializable {
     }
 
     private void loadDevicesInSelector() {
-        final List<Device> deviceList = this.deviceService.getDeviceList();
+        final List<String> deviceList = this.deviceService.getDeviceList().stream()
+                .map(Device::getPort)
+                .collect(toList());
         deviceSelector.setItems(observableArrayList(deviceList));
     }
 }
