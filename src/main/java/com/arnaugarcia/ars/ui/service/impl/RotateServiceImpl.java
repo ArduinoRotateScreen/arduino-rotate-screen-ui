@@ -37,7 +37,6 @@ public class RotateServiceImpl implements RotateService, ApplicationListener<Dev
 
     @Override
     public void rotateIfNeeded(DeviceData deviceData) {
-        System.out.println("Is rotate needed for " + deviceData.toString());
         this.currentDisplay.getOrientation();
     }
 
