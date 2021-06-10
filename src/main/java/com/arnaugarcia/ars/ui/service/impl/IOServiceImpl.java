@@ -34,11 +34,7 @@ public class IOServiceImpl implements IOService {
             return;
         }
         setCurrentDevice(of(device));
-        this.deviceService.attachListener(device, (DeviceDataListener) deviceData -> {
-            logger.debug("Found device data {}", deviceData.toString());
-            applicationContext.publishEvent(deviceData);
-            // Rotate if needed
-        });
+        this.deviceService.attachListener(device, streamDataToContext());
     }
 
     private boolean isCurrentStreamingDevice(Device device) {
@@ -56,14 +52,14 @@ public class IOServiceImpl implements IOService {
         setCurrentDevice(empty());
     }
 
-    private void setCurrentDevice(Optional<Device> device) {
-        this.currentDevice = device;
+    private DeviceDataListener streamDataToContext() {
+        return deviceData -> {
+            logger.debug("Found device data {}", deviceData.toString());
+            applicationContext.publishEvent(new DeviceDataEvent(deviceData));
+        };
     }
 
-    private DeviceDataListener streamEventsToContext() {
-        return deviceData -> {
-            final DeviceDataEvent deviceDataEvent = new DeviceDataEvent(deviceData);
-            applicationContext.publishEvent(deviceDataEvent);
-        };
+    private void setCurrentDevice(Optional<Device> device) {
+        this.currentDevice = device;
     }
 }
