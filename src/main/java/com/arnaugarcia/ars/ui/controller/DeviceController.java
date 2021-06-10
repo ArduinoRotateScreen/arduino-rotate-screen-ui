@@ -110,7 +110,8 @@ public class DeviceController extends Route implements Initializable {
         deviceSelector.setItems(observableArrayList(deviceList));
     }
 
-    public void saveDefaultDevice(MouseEvent mouseEvent) {
+    @FXML
+    public void saveDefaultDevice() {
         final UserConfigurationDTO userConfiguration = UserConfigurationDTO.builder()
                 .devicePort(this.currentDevice.getPort())
                 .build();
