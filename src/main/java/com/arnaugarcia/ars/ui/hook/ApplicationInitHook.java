@@ -35,7 +35,7 @@ public class ApplicationInitHook {
         logger.info("Trying to stream data if device is found");
         this.userPreferenceService.findUserConfiguration()
                 .flatMap(this::findDeviceByUserConfiguration)
-                .ifPresent(ioService::startStream);
+                .ifPresent(ioService::streamDataOf);
     }
 
     private Optional<Device> findDeviceByUserConfiguration(UserConfigurationDTO userConfigurationDTO) {

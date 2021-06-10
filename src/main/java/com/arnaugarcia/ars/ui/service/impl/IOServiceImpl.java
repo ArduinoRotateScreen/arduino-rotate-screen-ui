@@ -5,6 +5,8 @@ import com.arnaugarcia.ars.service.service.DeviceService;
 import com.arnaugarcia.ars.service.service.dto.DeviceDataListener;
 import com.arnaugarcia.ars.ui.hook.events.DeviceDataEvent;
 import com.arnaugarcia.ars.ui.service.IOService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import static java.util.Optional.of;
 @Service
 public class IOServiceImpl implements IOService {
 
+    private final Logger logger = LoggerFactory.getLogger(IOService.class);
     private Optional<Device> currentDevice = empty();
     private final ApplicationContext applicationContext;
     private final DeviceService deviceService;
@@ -26,9 +29,25 @@ public class IOServiceImpl implements IOService {
     }
 
     @Override
-    public void startStream(Device device) {
-        this.deviceService.attachListener(device, streamEventsToContext());
+    public void streamDataOf(Device device) {
+        if (isCurrentStreamingDevice(device)) {
+            return;
+        }
         setCurrentDevice(of(device));
+        this.deviceService.attachListener(device, (DeviceDataListener) deviceData -> {
+            logger.debug("Found device data {}", deviceData.toString());
+            applicationContext.publishEvent(deviceData);
+            // Rotate if needed
+        });
+    }
+
+    private boolean isCurrentStreamingDevice(Device device) {
+        return currentDevice.isPresent() && device.getPort().equals(currentDevice.get().getPort());
+    }
+
+    @Override
+    public boolean isStreaming() {
+        return this.currentDevice.isPresent();
     }
 
     @Override
@@ -42,6 +61,9 @@ public class IOServiceImpl implements IOService {
     }
 
     private DeviceDataListener streamEventsToContext() {
-        return deviceData -> applicationContext.publishEvent(new DeviceDataEvent(deviceData));
+        return deviceData -> {
+            final DeviceDataEvent deviceDataEvent = new DeviceDataEvent(deviceData);
+            applicationContext.publishEvent(deviceDataEvent);
+        };
     }
 }

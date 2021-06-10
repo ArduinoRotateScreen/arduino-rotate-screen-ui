@@ -2,10 +2,10 @@ package com.arnaugarcia.ars.ui.controller;
 
 import com.arnaugarcia.ars.service.domain.Device;
 import com.arnaugarcia.ars.service.service.DeviceService;
-import com.arnaugarcia.ars.service.service.dto.DeviceDataListener;
 import com.arnaugarcia.ars.service.service.exception.DeviceNotFound;
 import com.arnaugarcia.ars.ui.component.Route;
-import com.arnaugarcia.ars.ui.service.RotateService;
+import com.arnaugarcia.ars.ui.hook.events.DeviceDataEvent;
+import com.arnaugarcia.ars.ui.service.IOService;
 import com.arnaugarcia.ars.ui.service.UserPreferenceService;
 import com.arnaugarcia.ars.ui.service.dto.UserConfigurationDTO;
 import javafx.beans.value.ChangeListener;
@@ -15,8 +15,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseEvent;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
@@ -28,7 +28,7 @@ import static javafx.collections.FXCollections.observableArrayList;
 
 @Controller
 @FxmlView("/views/devices.fxml")
-public class DeviceController extends Route implements Initializable {
+public class DeviceController extends Route implements Initializable, ApplicationListener<DeviceDataEvent> {
 
     private final DeviceService deviceService;
 
@@ -46,15 +46,15 @@ public class DeviceController extends Route implements Initializable {
 
     private Device currentDevice;
 
-    private final RotateService rotateService;
+    private final IOService ioService;
 
     private final UserPreferenceService userPreferenceService;
 
     public DeviceController(DeviceService deviceService,
-                            RotateService rotateService,
+                            IOService ioService,
                             UserPreferenceService userPreferenceService) {
         this.deviceService = deviceService;
-        this.rotateService = rotateService;
+        this.ioService = ioService;
         this.userPreferenceService = userPreferenceService;
     }
 
@@ -80,27 +80,14 @@ public class DeviceController extends Route implements Initializable {
                 return;
             }
             this.currentDevice = selectedDevice;
-            attachListener(this.currentDevice);
+            ioService.streamDataOf(this.currentDevice);
         };
-    }
-
-    private void attachListener(Device device)  {
-        deviceService.attachListener(device, (DeviceDataListener) deviceData -> {
-            appendStringInLog(deviceData.toString());
-            this.rotateService.rotateIfNeeded(deviceData);
-        });
     }
 
     @FXML
     private void clearAndToggleLogArea() {
         this.logArea.clear();
         this.logArea.setDisable(!this.logArea.isDisabled());
-    }
-
-    private void appendStringInLog(String data) {
-        if (this.showDeviceLogsCheckBox.isSelected()) {
-            this.logArea.appendText(data);
-        }
     }
 
     private void loadDevicesInSelector() {
@@ -117,5 +104,13 @@ public class DeviceController extends Route implements Initializable {
                 .build();
         this.userPreferenceService.storeUserConfiguration(userConfiguration);
         // TODO: Alert system (success saved preferences)
+    }
+
+    @Override
+    public void onApplicationEvent(DeviceDataEvent deviceDataEvent) {
+        System.out.println("Data received " + deviceDataEvent.getData().toString());
+        if (this.showDeviceLogsCheckBox.isSelected()) {
+            this.logArea.appendText(deviceDataEvent.toString());
+        }
     }
 }
