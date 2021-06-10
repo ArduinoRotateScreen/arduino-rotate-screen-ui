@@ -28,13 +28,17 @@ public class IOServiceImpl implements IOService {
     @Override
     public void startStream(Device device) {
         this.deviceService.attachListener(device, streamEventsToContext());
-        this.currentDevice = of(device);
+        setCurrentDevice(of(device));
     }
 
     @Override
     public void stopStream() {
         this.currentDevice.ifPresent(deviceService::removeListener);
-        this.currentDevice = empty();
+        setCurrentDevice(empty());
+    }
+
+    private void setCurrentDevice(Optional<Device> device) {
+        this.currentDevice = device;
     }
 
     private DeviceDataListener streamEventsToContext() {
