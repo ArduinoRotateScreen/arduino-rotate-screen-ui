@@ -1,4 +1,4 @@
-package com.arnaugarcia.ars.ui.configuration;
+package com.arnaugarcia.ars.ui.hook;
 
 import com.arnaugarcia.ars.service.domain.Device;
 import com.arnaugarcia.ars.service.service.DeviceService;

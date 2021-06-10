@@ -1,12 +1,12 @@
-package com.arnaugarcia.ars.ui;
+package com.arnaugarcia.ars.ui.hook;
 
 import com.arnaugarcia.ars.ui.controller.MainController;
+import com.arnaugarcia.ars.ui.hook.events.StageReadyEvent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class PrimaryStageInitializer implements ApplicationListener<PrimaryStageInitializer.StageReadyEvent> {
+public class PrimaryStageInitializer implements ApplicationListener<StageReadyEvent> {
 
     @Value("classpath:/assets/css/main.css")
     private Resource mainCSSResource;
@@ -36,16 +36,6 @@ public class PrimaryStageInitializer implements ApplicationListener<PrimaryStage
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    static class StageReadyEvent extends ApplicationEvent {
-        public StageReadyEvent(Stage stage) {
-            super(stage);
-        }
-
-        public Stage getStage() {
-            return (Stage) getSource();
         }
     }
 }
