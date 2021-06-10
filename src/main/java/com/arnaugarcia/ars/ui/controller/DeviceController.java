@@ -109,7 +109,7 @@ public class DeviceController extends Route implements Initializable, Applicatio
     @Override
     public void onApplicationEvent(DeviceDataEvent deviceDataEvent) {
         System.out.println("Data received " + deviceDataEvent.getData().toString());
-        if (this.showDeviceLogsCheckBox.isSelected()) {
+        if (this.showDeviceLogsCheckBox != null && this.showDeviceLogsCheckBox.isSelected()) {
             this.logArea.appendText(deviceDataEvent.toString());
         }
     }
