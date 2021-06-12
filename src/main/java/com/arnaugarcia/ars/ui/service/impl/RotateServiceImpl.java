@@ -1,6 +1,8 @@
 package com.arnaugarcia.ars.ui.service.impl;
 
 import com.arnaugarcia.ars.service.domain.Display;
+import com.arnaugarcia.ars.service.domain.DisplayOrientation;
+import com.arnaugarcia.ars.service.domain.DisplayRotation;
 import com.arnaugarcia.ars.service.service.DisplayService;
 import com.arnaugarcia.ars.service.service.dto.DeviceData;
 import com.arnaugarcia.ars.ui.hook.events.DeviceDataEvent;
@@ -9,6 +11,8 @@ import com.arnaugarcia.ars.ui.service.dto.DeviceThreshold;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
+import static com.arnaugarcia.ars.service.domain.DisplayRotation.ROTATE_0;
+import static com.arnaugarcia.ars.service.domain.DisplayRotation.ROTATE_90;
 import static com.arnaugarcia.ars.ui.service.dto.DeviceThreshold.Between.between;
 
 @Service
@@ -32,12 +36,23 @@ public class RotateServiceImpl implements RotateService, ApplicationListener<Dev
     }
 
     private Display findPersistedDisplay() {
-        return new Display(188940595, null, null, 90, null, null);
+        return new Display(4128836, null, null, 90, null, null);
     }
 
     @Override
     public void rotateIfNeeded(DeviceData deviceData) {
-        this.currentDisplay.getOrientation();
+        deviceData.getDisplayOrientation(30).ifPresent(displayOrientation -> {
+            if (this.currentDisplay.getOrientation() != displayOrientation) {
+                displayService.rotateDisplay(currentDisplay, buildRotation(displayOrientation));
+            }
+        });
+    }
+
+    public DisplayRotation buildRotation(DisplayOrientation displayOrientation) {
+        return switch (displayOrientation) {
+            case VERTICAL, INVERTED_VERTICAL -> ROTATE_90;
+            case HORIZONTAL, INVERTED_HORIZONTAL -> ROTATE_0;
+        };
     }
 
     @Override
