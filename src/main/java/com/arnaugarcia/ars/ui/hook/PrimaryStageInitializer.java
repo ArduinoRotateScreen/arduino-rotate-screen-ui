@@ -33,6 +33,7 @@ public class PrimaryStageInitializer implements ApplicationListener<StageReadyEv
             Scene scene = new Scene(fxWeaver.loadView(MainController.class), 900, 600);
             scene.getStylesheets().add(mainCSSResource.getURL().toExternalForm());
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
