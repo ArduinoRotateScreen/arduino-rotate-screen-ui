@@ -61,8 +61,7 @@ public class DeviceController extends Route implements Initializable, Applicatio
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadDevicesInSelector();
-        userPreferenceService.findUserConfiguration()
-                .ifPresent(userConfigurationDTO -> setSelectedPort(userConfigurationDTO.getDevicePort()));
+        userPreferenceService.findPort().ifPresent(this::setSelectedPort);
         deviceSelector.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(onItemSelected());
@@ -99,10 +98,7 @@ public class DeviceController extends Route implements Initializable, Applicatio
 
     @FXML
     public void saveDefaultDevice() {
-        final UserConfigurationDTO userConfiguration = UserConfigurationDTO.builder()
-                .devicePort(this.currentDevice.getPort())
-                .build();
-        this.userPreferenceService.storeUserConfiguration(userConfiguration);
+        this.userPreferenceService.updatePort(this.currentDevice.getPort());
         // TODO: Alert system (success saved preferences)
     }
 

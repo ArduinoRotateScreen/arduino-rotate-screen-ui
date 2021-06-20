@@ -4,6 +4,8 @@ import com.arnaugarcia.ars.components.display.DisplayComponent;
 import com.arnaugarcia.ars.service.domain.Display;
 import com.arnaugarcia.ars.service.service.DisplayService;
 import com.arnaugarcia.ars.ui.component.Route;
+import com.arnaugarcia.ars.ui.service.UserPreferenceService;
+import com.arnaugarcia.ars.ui.service.dto.UserConfigurationDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static java.util.stream.Collectors.toList;
@@ -21,12 +24,14 @@ import static java.util.stream.Collectors.toList;
 public class HomeController extends Route implements Initializable {
 
     private final DisplayService displayService;
+    private final UserPreferenceService userPreferenceService;
 
     @FXML
     public HBox displayContainer;
 
-    public HomeController(DisplayService displayService) {
+    public HomeController(DisplayService displayService, UserPreferenceService userPreferenceService) {
         this.displayService = displayService;
+        this.userPreferenceService = userPreferenceService;
     }
 
     @Override
@@ -51,7 +56,11 @@ public class HomeController extends Route implements Initializable {
                 .displayWidth(display.getWide() / 10)
                 .displayHeight(display.getHeight() / 10)
                 .mainDisplay(display.getMain())
-                .onClickAction(event -> System.out.println("Screen clicked"))
+                .onClickAction(mouseEvent -> onDisplayClick(display))
                 .build();
+    }
+
+    private void onDisplayClick(Display display) {
+        userPreferenceService.updateSelectedDisplay(display.getId().toString());
     }
 }

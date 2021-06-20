@@ -13,10 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 import static com.arnaugarcia.ars.service.domain.DisplayRotation.ROTATE_0;
 import static com.arnaugarcia.ars.service.domain.DisplayRotation.ROTATE_90;
+import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 @Service
@@ -24,20 +26,20 @@ public class RotateServiceImpl implements RotateService, ApplicationListener<Dev
 
     private final Logger logger = LoggerFactory.getLogger(RotateService.class);
 
-    private Optional<Display> selectedDisplay;
+    private Optional<Display> selectedDisplay = empty();
     private final int threshold = 30; // Replace this with value
     private final UserPreferenceService userPreferenceService;
     private final DisplayService displayService;
 
     public RotateServiceImpl(UserPreferenceService userPreferenceService, DisplayService displayService) {
         this.userPreferenceService = userPreferenceService;
-        this.selectedDisplay = findPersistedDisplay();
         this.displayService = displayService;
     }
 
+    @PostConstruct
     private Optional<Display> findPersistedDisplay() {
-        return this.userPreferenceService.findUserConfiguration()
-                .flatMap(userConfigurationDTO -> this.displayService.findById(userConfigurationDTO.getSelectedDisplay()));
+        return this.userPreferenceService.findDisplay()
+                .flatMap(this.displayService::findById);
     }
 
     public void setSelectedDisplay(Display selectedDisplay) {

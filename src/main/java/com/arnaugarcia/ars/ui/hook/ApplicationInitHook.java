@@ -33,8 +33,8 @@ public class ApplicationInitHook {
     @EventListener
     public void onApplicationEvent(ApplicationStartedEvent applicationStartedEvent) {
         logger.info("Trying to stream data if device is found");
-        this.userPreferenceService.findUserConfiguration()
-                .flatMap(this::findDeviceByUserConfiguration)
+        userPreferenceService.findPort()
+                .flatMap(this.deviceService::findDeviceByPort)
                 .ifPresent(ioService::streamDataOf);
     }
 

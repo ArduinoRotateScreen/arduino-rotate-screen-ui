@@ -6,7 +6,11 @@ import java.util.Optional;
 
 public interface UserPreferenceService {
 
-    Optional<UserConfigurationDTO> findUserConfiguration();
+    Optional<String> findDisplay();
 
-    void storeUserConfiguration(UserConfigurationDTO userConfigurationDTO);
+    Optional<String> findPort();
+
+    void updateSelectedDisplay(String displayID);
+
+    void updatePort(String port);
 }

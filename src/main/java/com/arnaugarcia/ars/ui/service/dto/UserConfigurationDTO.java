@@ -3,16 +3,30 @@ package com.arnaugarcia.ars.ui.service.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
+import lombok.Setter;
+
+import static org.springframework.util.StringUtils.hasText;
 
 @Getter
+@Setter
+@Builder
 public class UserConfigurationDTO {
-    private final String devicePort;
-    private final String selectedDisplay;
+    private String devicePort;
+    private String displayId;
 
-    @Builder
-    public UserConfigurationDTO(@NonNull String devicePort, @NonNull String selectedDisplay) {
-        this.selectedDisplay = selectedDisplay;
+    public UserConfigurationDTO() {
+    }
+
+    public UserConfigurationDTO(String devicePort, String displayId) {
+        this.displayId = displayId;
         this.devicePort = devicePort;
+    }
+
+    public boolean existsPort() {
+        return hasText(this.devicePort);
+    }
+
+    public boolean existsDisplay() {
+        return hasText(this.displayId);
     }
 }
