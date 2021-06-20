@@ -37,11 +37,13 @@ public class RotateServiceImpl implements RotateService, ApplicationListener<Dev
     }
 
     @PostConstruct
-    private Optional<Display> findPersistedDisplay() {
-        return this.userPreferenceService.findDisplay()
-                .flatMap(this.displayService::findById);
+    private void findPersistedDisplay() {
+        this.userPreferenceService.findDisplay()
+                .flatMap(this.displayService::findById)
+                .ifPresent(this::setSelectedDisplay);
     }
 
+    @Override
     public void setSelectedDisplay(Display selectedDisplay) {
         this.selectedDisplay = of(selectedDisplay);
     }
@@ -55,15 +57,21 @@ public class RotateServiceImpl implements RotateService, ApplicationListener<Dev
                     final DisplayRotation rotation = buildRotation(deviceOrientation);
                     logger.info("Rotating screen {} to {}", selectedDisplay.getId(), rotation.getValue());
                     displayService.rotateDisplay(selectedDisplay, rotation);
+                    reloadSelectedDisplayById(selectedDisplay.getId().toString());
                 }
             }
         });
     }
 
+    private void reloadSelectedDisplayById(String displayId) {
+        this.displayService.findById(displayId)
+                .ifPresent(this::setSelectedDisplay);
+    }
+
     public DisplayRotation buildRotation(Orientation orientation) {
         return switch (orientation) {
-            case VERTICAL, INVERTED_VERTICAL -> ROTATE_0;
-            case HORIZONTAL, INVERTED_HORIZONTAL -> ROTATE_90;
+            case VERTICAL, INVERTED_VERTICAL -> ROTATE_90;
+            case HORIZONTAL, INVERTED_HORIZONTAL -> ROTATE_0;
         };
     }
 

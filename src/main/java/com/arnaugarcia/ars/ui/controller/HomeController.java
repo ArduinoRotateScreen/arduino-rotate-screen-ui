@@ -4,8 +4,8 @@ import com.arnaugarcia.ars.components.display.DisplayComponent;
 import com.arnaugarcia.ars.service.domain.Display;
 import com.arnaugarcia.ars.service.service.DisplayService;
 import com.arnaugarcia.ars.ui.component.Route;
+import com.arnaugarcia.ars.ui.service.RotateService;
 import com.arnaugarcia.ars.ui.service.UserPreferenceService;
-import com.arnaugarcia.ars.ui.service.dto.UserConfigurationDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
@@ -24,13 +24,17 @@ import static java.util.stream.Collectors.toList;
 public class HomeController extends Route implements Initializable {
 
     private final DisplayService displayService;
+    private final RotateService rotateService;
     private final UserPreferenceService userPreferenceService;
 
     @FXML
     public HBox displayContainer;
 
-    public HomeController(DisplayService displayService, UserPreferenceService userPreferenceService) {
+    public HomeController(DisplayService displayService,
+                          RotateService rotateService,
+                          UserPreferenceService userPreferenceService) {
         this.displayService = displayService;
+        this.rotateService = rotateService;
         this.userPreferenceService = userPreferenceService;
     }
 
@@ -72,6 +76,7 @@ public class HomeController extends Route implements Initializable {
 
     private void onDisplayClick(Display display) {
         userPreferenceService.updateSelectedDisplay(display.getId().toString());
+        rotateService.setSelectedDisplay(display);
         loadDisplays();
     }
 }
