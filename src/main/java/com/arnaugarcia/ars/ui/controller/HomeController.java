@@ -36,11 +36,15 @@ public class HomeController extends Route implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        final List<DisplayComponent> displays = findAndTransformDisplays();
-        appendDisplays(displays);
+        loadDisplays();
+    }
+
+    private void loadDisplays() {
+        appendDisplays(findAndTransformDisplays());
     }
 
     private void appendDisplays(List<DisplayComponent> displays) {
+        this.displayContainer.getChildren().clear();
         this.displayContainer.getChildren().addAll(displays);
     }
 
@@ -56,11 +60,18 @@ public class HomeController extends Route implements Initializable {
                 .displayWidth(display.getWide() / 10)
                 .displayHeight(display.getHeight() / 10)
                 .mainDisplay(display.getMain())
+                .selected(isSelectedDisplay(display))
                 .onClickAction(mouseEvent -> onDisplayClick(display))
                 .build();
     }
 
+    private boolean isSelectedDisplay(Display display) {
+        final Optional<String> persistedDisplay = userPreferenceService.findDisplay();
+        return persistedDisplay.isPresent() && persistedDisplay.get().equals(display.getId().toString());
+    }
+
     private void onDisplayClick(Display display) {
         userPreferenceService.updateSelectedDisplay(display.getId().toString());
+        loadDisplays();
     }
 }
