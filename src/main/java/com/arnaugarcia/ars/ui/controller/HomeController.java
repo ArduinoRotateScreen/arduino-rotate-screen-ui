@@ -51,6 +51,7 @@ public class HomeController extends Route implements Initializable {
                 .displayWidth(display.getWide() / 10)
                 .displayHeight(display.getHeight() / 10)
                 .mainDisplay(display.getMain())
+                .onClickAction(event -> System.out.println("Screen clicked"))
                 .build();
     }
 }
