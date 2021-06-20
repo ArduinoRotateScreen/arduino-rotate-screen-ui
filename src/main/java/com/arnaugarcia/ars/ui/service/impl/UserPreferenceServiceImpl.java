@@ -20,11 +20,12 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
     private final Preferences preferences = userRoot().node(USER_PREFERENCES_NODE);
     private Optional<UserConfigurationDTO> userConfiguration = empty();
     private final String DEVICE_PORT_KEY = "PORT";
+    private final String DISPLAY_KEY = "DISPLAY";
 
     @PostConstruct
     private void loadUserPreferences() {
         try {
-            if (preferences.nodeExists(USER_PREFERENCES_NODE)) {
+            if (hasAllStoredProperties()) {
                 setUserConfiguration(buildUserPreferences(preferences));
             } else {
                 preferences.node(USER_PREFERENCES_NODE);
@@ -34,9 +35,16 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
         }
     }
 
+    private boolean hasAllStoredProperties() throws BackingStoreException {
+        return preferences.nodeExists(USER_PREFERENCES_NODE) &&
+                preferences.node(USER_PREFERENCES_NODE).nodeExists(DEVICE_PORT_KEY) &&
+                preferences.node(USER_PREFERENCES_NODE).nodeExists(DISPLAY_KEY);
+    }
+
     private UserConfigurationDTO buildUserPreferences(Preferences userPreferences) {
         return UserConfigurationDTO.builder()
                 .devicePort(userPreferences.get(DEVICE_PORT_KEY, null))
+                .selectedDisplay(userPreferences.get(DISPLAY_KEY, null))
                 .build();
     }
 

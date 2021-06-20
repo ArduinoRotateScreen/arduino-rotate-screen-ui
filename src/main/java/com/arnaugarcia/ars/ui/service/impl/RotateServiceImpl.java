@@ -36,10 +36,8 @@ public class RotateServiceImpl implements RotateService, ApplicationListener<Dev
     }
 
     private Optional<Display> findPersistedDisplay() {
-        final String storedDisplayId = this.userPreferenceService.findUserConfiguration()
-                .orElseThrow()
-                .getSelectedDisplay();
-        return this.displayService.findById(storedDisplayId);
+        return this.userPreferenceService.findUserConfiguration()
+                .flatMap(userConfigurationDTO -> this.displayService.findById(userConfigurationDTO.getSelectedDisplay()));
     }
 
     public void setSelectedDisplay(Display selectedDisplay) {
